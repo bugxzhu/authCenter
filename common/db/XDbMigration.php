@@ -1,6 +1,8 @@
 <?php
+namespace common\db;
 
-class XDbMigration extends CDbMigration {
+
+class XDbMigration extends \yii\db\Migration {
 
     /**
      * 检查列是否存在
@@ -45,7 +47,7 @@ class XDbMigration extends CDbMigration {
      */
     public function getTableColumns($tableName) {
         try {
-            $columns = $this->getDbConnection()->createCommand("SHOW COLUMNS FROM {$tableName}")->queryAll();
+            $columns = $this->db->createCommand("SHOW COLUMNS FROM {$tableName}")->queryAll();
         } catch (CDbException $e) {
             $columns = array();
         }
@@ -59,7 +61,7 @@ class XDbMigration extends CDbMigration {
      */
 	public function getTables(){
 		try{
-			$tables = $this->getDbConnection()->createCommand("SHOW TABLES")->queryAll();
+			$tables = $this->db->createCommand("SHOW TABLES")->queryAll();
 		}catch (CDbException $e) {
             $tables = array();
         }
@@ -74,7 +76,8 @@ class XDbMigration extends CDbMigration {
      */
 	public function existTable($tablename){
         try{
-            $table = $this->getDbConnection()->createCommand("select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_NAME='".$tablename."'")->queryAll();
+           // $query = new Query;
+            $table = $this->db->createCommand("select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_NAME='".$tablename."'")->queryAll();
         }catch (CDbException $e) {
             return false;
         }
@@ -89,7 +92,7 @@ class XDbMigration extends CDbMigration {
     */
 
     public function gettablePrefix(){
-        return $this->getDbConnection()->tablePrefix;
+        return $this->db->tablePrefix;
     }
 
 }
